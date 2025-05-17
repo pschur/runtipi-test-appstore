@@ -1,0 +1,51 @@
+{
+  "id": "keycloak",
+  "name": "Keycloak",
+  "port": 8080,
+  "available": true,
+  "exposable": true,
+  "dynamic_config": true,
+  "no_gui": true,
+  "tipi_version": 43,
+  "version": "25.0",
+  "https": true,
+  "categories": ["authentication"],
+  "description": "The authentication glue you need.",
+  "short_desc": "The authentication glue you need.",
+  "author": "goauthentik",
+  "source": "https://github.com/goauthentik/authentik",
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "KEYCLOAK_DB_PASSWORD",
+      "min": 40,
+      "env_variable": "KEYCLOAK_DB_PASSWORD"
+    },
+    {
+      "type": "text",
+      "label": "Keycloak Domain",
+      "max": 50,
+      "min": 3,
+      "required": true,
+      "env_variable": "KEYCLOAK_HOSTNAME"
+    },
+    {
+      "type": "text",
+      "label": "Admin Username",
+      "max": 50,
+      "min": 3,
+      "required": true,
+      "env_variable": "KEYCLOAK_ADMIN_USERNAME"
+    },
+    {
+      "type": "password",
+      "label": "Admin Password",
+      "max": 50,
+      "min": 3,
+      "required": true,
+      "env_variable": "KEYCLOAK_ADMIN_PASSWORD"
+    }
+  ],
+  "created_at": 1691943801422,
+  "updated_at": 1734908161108
+}

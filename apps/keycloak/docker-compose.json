@@ -1,0 +1,61 @@
+{
+  "services": [
+    {
+      "name": "postgres-keycloak",
+      "image": "postgres:16",
+      "environment": {
+        "POSTGRES_DB": "keycloak",
+        "POSTGRES_USER": "keycloak_db_user",
+        "POSTGRES_PASSWORD": "${KEYCLOAK_DB_PASSWORD}"
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/keycloak-postgres",
+          "containerPath": "/var/lib/postgresql/data",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "healthCheck": {
+        "test": "CMD pg_isready -q -d keycloak -U keycloak_db_user",
+        "interval": "10s",
+        "timeout": "60s",
+        "retries": 3
+      }
+    },
+    {
+      "name": "keycloak-main",
+      "image": "quay.io/keycloak/keycloak:25.0",
+      "command": "start-dev",
+      "isMain": true,
+      "internalPort": "8080",
+      "environment": {
+        "KC_DB": "postgres",
+        "KC_DB_URL_HOST": "postgres-keycloak",
+        "KC_DB_URL_DATABASE": "keycloak",
+        "KC_DB_USERNAME": "keycloak_db_user",
+        "KC_DB_PASSWORD": "${KEYCLOAK_DB_PASSWORD}",
+        "KC_DB_SCHEMA": "public",
+        "KEYCLOAK_ADMIN": "${KEYCLOAK_ADMIN_USERNAME}",
+        "KEYCLOAK_ADMIN_PASSWORD": "${KEYCLOAK_ADMIN_PASSWORD}",
+        "KEYCLOAK_ENABLE_HEALTH_ENDPOINTS": "true",
+        "KEYCLOAK_ENABLE_STATISTICS": "true",
+        "KC_HOSTNAME": "${KEYCLOAK_HOSTNAME}",
+        "KC_PROXY_HEADERS": "xforwarded",
+        "PROXY_ADDRESS_FORWARDING": "true"
+      },
+      "healthCheck": {
+        "test": "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1",
+        "interval": "10s",
+        "timeout": "90s",
+        "retries": 3
+      },
+      "dependsOn": {
+        "postgres-keycloak": {
+          "condition": "service_healthy"
+        }
+      }
+    }
+  ]
+}
