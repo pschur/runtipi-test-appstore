@@ -9,7 +9,7 @@
   "tipi_version": 43,
   "version": "25.0",
   "https": true,
-  "categories": ["authentication"],
+  "categories": ["utilities"],
   "description": "The authentication glue you need.",
   "short_desc": "The authentication glue you need.",
   "author": "goauthentik",
