@@ -20,8 +20,9 @@
       "healthCheck": {
         "test": "CMD pg_isready -q -d keycloak -U keycloak_db_user",
         "interval": "10s",
-        "timeout": "60s",
-        "retries": 3
+        "timeout": "5s",
+        "retries": 3,
+        "startPeriod": "60s"
       }
     },
     {
@@ -48,8 +49,9 @@
       "healthCheck": {
         "test": "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1",
         "interval": "10s",
-        "timeout": "90s",
-        "retries": 3
+        "timeout": "5s",
+        "retries": 3,
+        "startPeriod": "90s"
       },
       "dependsOn": {
         "postgres-keycloak": {
